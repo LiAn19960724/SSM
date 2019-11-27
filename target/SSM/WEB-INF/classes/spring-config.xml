@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -23,7 +23,7 @@
     <mvc:default-servlet-handler />
 
     <!--5.加载db.properties和redis.properties文件-->
-    <context:property-placeholder location="classpath:*.properties"></context:property-placeholder>
+    <context:property-placeholder location="classpath*:*.properties"></context:property-placeholder>
 
     <!--6.缓存配置-->
     <!--6.1连接池配置 -->
@@ -73,6 +73,11 @@
         <property name="maxPoolSize" value="${db.maxPoolSize}"></property>
     </bean>-->
     <!--7.druid配置方式(推荐)-->
+    <!--BasicDataSource提供了close()方法关闭数据源，所以必须设定destroy-method=”close”属性， 
+    以便Spring容器关闭时，数据源能够正常关闭；销毁方法调用close(),是将连接关闭，并不是真正的把资源销毁。
+    还可以理解成:
+    当数据库连接不使用的时候,就把该连接重新放到数据池中,方便下次使用调用.
+    -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <property name="driverClassName" value="${db.driver}"></property>
         <property name="url" value="${db.url}"></property>
@@ -108,7 +113,7 @@
     <!--10.1开启事务注解，标注@Transactional的类和方法将具有事务性 -->
     <tx:annotation-driven transaction-manager="transactionManager" />
 
-    
+    <!--文件上传-->
 
 
 

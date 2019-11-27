@@ -43,12 +43,12 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        <!--lombok工具包依赖(Idea需要下载Lombok plugin)-->
-        <dependency>
+        <!--lombok工具包依赖(Idea需要下载Lombok plugin)不推荐使用-->
+        <!--  <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.0</version>
-        </dependency>
+        </dependency>-->
         <!--Fastjson依赖-->
         <dependency>
             <groupId>com.alibaba</groupId>

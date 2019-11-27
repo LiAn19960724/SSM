@@ -23,7 +23,7 @@
     <mvc:default-servlet-handler />
 
     <!--5.加载db.properties和redis.properties文件-->
-    <context:property-placeholder location="classpath:*.properties"></context:property-placeholder>
+    <context:property-placeholder location="classpath*:*.properties"></context:property-placeholder>
 
     <!--6.缓存配置-->
     <!--6.1连接池配置 -->
