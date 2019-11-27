@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--设置log4j2的自身log级别为DEBUG-->
+<configuration status="DEBUG ">
+    <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+
+    <!--All:最低等级的，用于打开所有日志记录.
+        Trace:是追踪，就是程序推进以下，你就可以写个trace输出，所以trace应该会特别多，不过没关系，我们可以设置最低日志级别不让他输出.
+        Debug:指出细粒度信息事件对调试应用程序是非常有帮助的.
+        Info:消息在粗粒度级别上突出强调应用程序的运行过程.
+        Warn:输出警告及warn以下级别的日志.
+        Error:输出错误信息日志.
+        Fatal:输出每个严重的错误事件将会导致应用程序的退出的日志.
+        OFF:最高等级的，用于关闭所有日志记录.
+       程序会打印高于或等于所设置级别的日志，设置的日志等级越高，打印出来的日志就越少。-->
+    <appenders>
+        <!-- 控制台输出 -->
+        <console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %n%msg%n"/>
+        </console>
+
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+        <File name="log" fileName="log/test.log" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+
+        <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="RollingFileInfo" fileName="D:\\log4j2\\allOut.log"
+                     filePattern="D:\\log4j2\\$${date:yyyy-MM-dd}/allOut-%d{yyyy-MM-dd}-%i.log.gz">
+
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+
+            <!-- 输出格式 -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggerzingPolicy interval="1"/>
+                <!-- SizeBasedTriggeringPolicy单个文件的大小限制 -->
+                <SizeBasedTriggeringPolicy size="2 MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <!-- DefaultRolloverStrategy同一个文件下的最大文件数 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+    </appenders>
+
+    <!--过滤掉spring和hibernate(或者mybatis)的一些无用的debug信息-->
+    <loggers>
+        <logger name="org.springframework" level="INFO"></logger>
+        <!--(name=orj.hibernate或者name=orj.mybatis)-->
+        <logger name="org.mybatis" level="INFO"></logger>
+        <root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+        </root>
+    </loggers>
+
+</configuration>
