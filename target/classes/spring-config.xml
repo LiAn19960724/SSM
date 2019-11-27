@@ -20,7 +20,7 @@
     <mvc:annotation-driven/>
 
     <!--3.把对静态资源访问请求映射到DefaultServletHttpRequestHandler上-->
-    <mvc:default-servlet-handler/>
+    <mvc:default-servlet-handler />
 
     <!--5.加载db.properties和redis.properties文件-->
     <context:property-placeholder location="classpath*:*.properties"></context:property-placeholder>
